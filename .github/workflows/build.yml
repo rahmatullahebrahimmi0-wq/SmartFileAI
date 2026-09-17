@@ -1,0 +1,51 @@
+name: Build SmartFile AI
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate project files
+        run: python setup_smartfile.py
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Generate Gradle wrapper
+        working-directory: SmartFileAI
+        run: gradle wrapper --gradle-version 8.7
+
+      - name: Build Release AAB
+        working-directory: SmartFileAI
+        run: ./gradlew bundleRelease --stacktrace
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartFileAI-AAB
+          path: SmartFileAI/app/build/outputs/bundle/release/*.aab
+
+      - name: Upload APK (Debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartFileAI-Debug-APK
+          path: SmartFileAI/app/build/outputs/apk/debug/*.apk
