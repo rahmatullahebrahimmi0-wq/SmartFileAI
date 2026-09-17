@@ -36,16 +36,48 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Android SDK
+        run: |
+          sudo mkdir -p /opt/android-sdk
+          cd /opt/android-sdk
+          sudo chown $USER:$USER /opt/android-sdk
+          echo "ANDROID_HOME=/opt/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=/opt/android-sdk" >> $GITHUB_ENV
+          echo "/opt/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip
+          mkdir -p cmdline-tools/latest
+          mv cmdline-tools/bin cmdline-tools/latest/ 2>/dev/null || true
+          mv cmdline-tools/lib cmdline-tools/latest/ 2>/dev/null || true
+          mv cmdline-tools/source.properties cmdline-tools/latest/ 2>/dev/null || true
+          ls -la cmdline-tools/latest/
+
+      - name: Accept Android licenses
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=/opt/android-sdk" > SmartFileAI/local.properties
+          cat SmartFileAI/local.properties
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.7'
 
+      - name: Gradle daemon info
+        working-directory: SmartFileAI
+        run: gradle --version
+
       - name: Build Debug APK
         working-directory: SmartFileAI
-        run: gradle assembleDebug --stacktrace --no-daemon
+        run: gradle assembleDebug --stacktrace --no-daemon --info 2>&1 | tail -100
 
       - name: Build Release AAB
+        if: success()
         working-directory: SmartFileAI
         run: gradle bundleRelease --stacktrace --no-daemon
 
