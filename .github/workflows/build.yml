@@ -23,8 +23,12 @@ jobs:
 
       - name: Verify project structure
         run: |
+          echo "=== Root ==="
           ls -la
+          echo "=== SmartFileAI ==="
           ls -la SmartFileAI/
+          echo "=== SmartFileAI/app ==="
+          ls -la SmartFileAI/app/
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4
@@ -37,28 +41,26 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Generate Gradle wrapper
+      - name: Build Debug APK
         working-directory: SmartFileAI
-        run: gradle wrapper --gradle-version 8.7
-
-      - name: Grant execute permission
-        working-directory: SmartFileAI
-        run: chmod +x gradlew
+        run: gradle assembleDebug --stacktrace --no-daemon
 
       - name: Build Release AAB
         working-directory: SmartFileAI
-        run: ./gradlew bundleRelease --stacktrace
+        run: gradle bundleRelease --stacktrace --no-daemon
 
       - name: Upload AAB
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: SmartFileAI-AAB
           path: SmartFileAI/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: warn
 
       - name: Upload Debug APK
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: SmartFileAI-Debug-APK
           path: SmartFileAI/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
