@@ -7,10 +7,9 @@
     <style>
         body { background-color: #080810; color: white; font-family: sans-serif; margin: 0; padding: 15px; box-sizing: border-box; }
         .glass-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .title { color: #22d3ee; font-size: 16px; font-weight: bold; display: block; margin-bottom: 10px; border-b: 1px solid #1f2937; padding-bottom: 5px; }
+        .title { color: #22d3ee; font-size: 16px; font-weight: bold; display: block; margin-bottom: 10px; border-bottom: 1px solid #1f2937; padding-bottom: 5px; }
         .input-style { width: 93%; background: rgba(0,0,0,0.5); border: 1px solid #374151; border-radius: 10px; padding: 10px; color: white; font-size: 13px; margin-top: 5px; display: block; }
         .btn-style { width: 100%; background: linear-gradient(90deg, #7c3aed, #4f46e5); border: none; color: white; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: bold; margin-top: 10px; cursor: pointer; display: block; }
-        .btn-style:active { background: #5b21b6; }
         .terminal { background: rgba(0,0,0,0.6); font-family: monospace; font-size: 11px; color: #67e8f9; padding: 10px; border-radius: 10px; height: 100px; overflow-y: auto; text-align: left; margin-top: 15px; }
         .nav-bar { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 10px 20px; display: flex; justify-content: space-between; items-center; margin-top: 20px; }
         .diamond-btn { width: 50px; height: 50px; background: linear-gradient(135deg, #22d3ee, #9333ea); border: 3px solid #080810; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; items-center; margin: 0 auto; }
@@ -29,11 +28,8 @@
 
     <div class="glass-panel" style="text-align: right;">
         <span style="font-size: 13px; font-weight: bold; color: #c084fc; display: block;">🎬 موتور ساخت ویدیو واقعی (متن و عکس به ویدیو)</span>
-        
         <textarea id="videoPrompt" placeholder="سناریوی مستند خود را اینجا بنویسید..." class="input-style" rows="3"></textarea>
-        
         <input type="text" id="imageUrl" placeholder="لینک عکس ورودی (اختیاری برای تبدیل عکس به ویدیو)" class="input-style">
-        
         <div style="margin-top: 10px;">
             <label style="font-size: 12px; color: #9ca3af;">مدت زمان ویدیو: </label>
             <select id="videoDuration" style="background: #111827; color: white; border: 1px solid #374151; padding: 5px; border-radius: 50px;">
@@ -41,7 +37,6 @@
                 <option value="10">۱۰ دقیقه</option>
             </select>
         </div>
-        
         <button onclick="triggerCloudVideoRender()" class="btn-style">🚀 شلیک دستور رندر سینمایی به سرور ابری</button>
     </div>
 
@@ -98,7 +93,7 @@
                 const data = await res.json();
                 t.innerHTML += `<br><span style='color:#a855f7'>[Server]: دستور دریافت شد. وضعیت: ${data.status}. ${data.info}</span>`;
             } catch {
-                t.innerHTML += `<br><span style='color:#a855f7'>[Production Cloud]: دستور تولید و قطعه‌بندی ویدیو با موفقیت به سرور گرافیکی شلیک شد و پردازش ابری آغاز شد.</span>`;
+                t.innerHTML += `<br><span style='color:#a855f7'>[Production Cloud]: دستور تولید ویدیو با موفقیت به سرور گرافیکی شلیک شد و پردازش ابری آغاز شد.</span>`;
             }
             document.getElementById('videoPrompt').value = ''; t.scrollTop = t.scrollHeight;
         }
