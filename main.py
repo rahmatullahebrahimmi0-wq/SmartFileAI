@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 app = FastAPI(title="SmartFile AI Elite")
 
-# تنظیمات اصلی CORS برای اتصال بدون لیمیت گوشی
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,7 +22,6 @@ class VideoRequest(BaseModel):
     prompt: str
     duration: int
 
-# اتصال مستقیم ظاهر برنامه (index.html) به صفحه اول سرور پایتون
 @app.get("/", response_class=HTMLResponse)
 async def get_frontend():
     if os.path.exists("index.html"):
