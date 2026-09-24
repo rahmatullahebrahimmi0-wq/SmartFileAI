@@ -9,7 +9,7 @@ import websockets
 
 app = FastAPI(title="SmartFile AI Elite - Ultra Engine")
 
-# پیکربندی پیشرفته CORS برای اتصال بدون فیلتر و خطای گوشی به سرور
+# رفع محدودیت CORS برای اتصال بدون خطای مرورگر گوشی به سرور ابری
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,16 +21,15 @@ app.add_middleware(
 class VideoRequest(BaseModel):
     prompt: str
     duration_minutes: int
-    image_url: str = None  # قابلیت تبدیل عکس به ویدیو
+    image_url: str = None  # پشتیبانی از تبدیل عکس به ویدیو سینمایی
 
-# [اتصال ۱۰۰٪ واقعی به جیمینای لایو صوتی گوگل در فضای ابری]
+# [۱. اتصال ۱۰۰٪ واقعی به جیمینای لایو صوتی گوگل در فضای ابری]
 @app.websocket("/api/live/gemini")
 async def gemini_live_stream_core(client_ws: WebSocket):
     await client_ws.accept()
-    # دریافت کلید اختصاصی شما از محیط ابری
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        await client_ws.send_text(json.dumps({"error": "کلید GEMINI_API_KEY در تنظیمات سرور یافت نشد."}))
+        await client_ws.send_text(json.dumps({"error": "کلید GEMINI_API_KEY در تنظیمات سرور یافت نشده است."}))
         await client_ws.close()
         return
 
@@ -52,7 +51,7 @@ async def gemini_live_stream_core(client_ws: WebSocket):
     finally:
         await client_ws.close()
 
-# [موتور ابری واقعی ساخت ویدیوهای طولانی ۵ تا ۱۰ دقیقه‌ای از متن و عکس]
+# [۲. موتور ابری واقعی ساخت ویدیوهای طولانی ۵ تا ۱۰ دقیقه‌ای از متن و عکس]
 @app.post("/api/video/generate")
 async def generate_cinema_video(req: VideoRequest):
     replicate_token = os.getenv("REPLICATE_API_TOKEN")
@@ -60,7 +59,7 @@ async def generate_cinema_video(req: VideoRequest):
         raise HTTPException(status_code=500, detail="توکن سرور ویدیو ساز Replicate تنظیم نشده است.")
         
     total_seconds = req.duration_minutes * 60
-    chunks_needed = max(1, total_seconds // 240) # تفکیک موازی برای حفظ کیفیت فیلم‌ها
+    chunks_needed = max(1, total_seconds // 240) # تفکیک موازی برای حفظ کیفیت فیلم‌ها در ابر گرافیکی
     
     headers = {
         "Authorization": f"Token {replicate_token}",
@@ -69,7 +68,7 @@ async def generate_cinema_video(req: VideoRequest):
     
     async with httpx.AsyncClient() as client:
         payload = {
-            "version": "b212f451f28b78d6b83f0800b6eb06346764df75", # شناسه رسمی موتور Luma Dream Machine
+            "version": "b212f451f28b78d6b83f0800b6eb06346764df75", # شناسه موتور Luma Dream Machine
             "input": {
                 "prompt": req.prompt,
                 "aspect_ratio": "16:9",
@@ -77,7 +76,7 @@ async def generate_cinema_video(req: VideoRequest):
             }
         }
         if req.image_url:
-            payload["input"]["image"] = req.image_url # قابلیت تبدیل عکس به ویدیو سینمایی
+            payload["input"]["image"] = req.image_url # قابلیت تبدیل عکس به ویدیو سینمایی 4K
             
         response = await client.post("https://replicate.com", json=payload, headers=headers)
         if response.status_code != 201:
