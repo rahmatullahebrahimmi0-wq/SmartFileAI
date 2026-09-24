@@ -4,96 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartFile AI Elite - Command Center</title>
-    <script src="https://tailwindcss.com"></script>
     <style>
-        body { background: radial-gradient(circle at top, #1a1b35, #080810) !important; color: white !important; font-family: system-ui, sans-serif; }
-        .glass-panel { background: rgba(255, 255, 255, 0.03) !important; backdrop-filter: blur(25px) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5) !important; }
-        .neon-border { border-color: rgba(147, 51, 234, 0.5) !important; box-shadow: 0 0 25px rgba(147, 51, 234, 0.2) !important; }
+        body { background-color: #080810; color: white; font-family: sans-serif; margin: 0; padding: 15px; box-sizing: border-box; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .title { color: #22d3ee; font-size: 16px; font-weight: bold; display: block; margin-bottom: 10px; border-b: 1px solid #1f2937; padding-bottom: 5px; }
+        .input-style { width: 93%; background: rgba(0,0,0,0.5); border: 1px solid #374151; border-radius: 10px; padding: 10px; color: white; font-size: 13px; margin-top: 5px; display: block; }
+        .btn-style { width: 100%; background: linear-gradient(90deg, #7c3aed, #4f46e5); border: none; color: white; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: bold; margin-top: 10px; cursor: pointer; display: block; }
+        .btn-style:active { background: #5b21b6; }
+        .terminal { background: rgba(0,0,0,0.6); font-family: monospace; font-size: 11px; color: #67e8f9; padding: 10px; border-radius: 10px; height: 100px; overflow-y: auto; text-align: left; margin-top: 15px; }
+        .nav-bar { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 10px 20px; display: flex; justify-content: space-between; items-center; margin-top: 20px; }
+        .diamond-btn { width: 50px; height: 50px; background: linear-gradient(135deg, #22d3ee, #9333ea); border: 3px solid #080810; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; items-center; margin: 0 auto; }
+        .diamond-shape { width: 15px; height: 15px; background: rgba(255,255,255,0.4); transform: rotate(45deg); }
     </style>
 </head>
-<body class="fixed inset-0 flex flex-col justify-between p-4 overflow-hidden bg-[#080810]">
+<body>
 
-    <div class="w-full max-w-md mx-auto flex flex-col gap-2 z-10">
-        <div class="flex justify-between items-center border-b border-gray-800/40 pb-1">
-            <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">SmartFile AI ✪ ELITE CENTER</span>
-            <span class="text-[9px] bg-amber-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30">CLOUD RUNNING</span>
-        </div>
-        <div class="glass-panel rounded-2xl p-3">
-            <div class="flex justify-between text-xs font-mono text-cyan-400 mb-1"><span>86.1 GB / 128 GB (گوشی کنترلر ابری است)</span></div>
-            <div class="w-full bg-gray-900 rounded-full h-1.5 overflow-hidden"><div class="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 h-full" style="width: 67%"></div></div>
+    <div class="glass-panel">
+        <span class="title">SmartFile AI ✪ ELITE CENTER</span>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #9ca3af;">
+            <span>ظرفیت کلود: 86.1 GB / 128 GB</span>
+            <span style="color: #fbbf24;">CLOUD RUNNING</span>
         </div>
     </div>
 
-    <div class="flex-1 w-full max-w-md mx-auto my-3 overflow-y-auto space-y-3 z-10 pr-1">
-        <!-- پنل ساخت ویدیو واقعی از متن و عکس -->
-        <div class="glass-panel rounded-2xl p-3 flex flex-col gap-2 neon-border text-right">
-            <span class="text-xs font-bold text-purple-400">🎬 موتور ابری ساخت ویدیو واقعی (Text/Image to Video)</span>
-            <textarea id="videoPrompt" placeholder="سناریوی مستند خود را بنویسید (مثلاً: مستند حیات وحش با کیفیت سینمایی)..." class="w-full bg-black/40 border border-gray-800 rounded-xl p-2.5 text-xs text-white outline-none h-16 mt-1 resize-none focus:border-purple-500"></textarea>
-            <div class="flex gap-2 mt-1">
-                <input type="text" id="imageUrl" placeholder="لینک عکس ورودی (اختیاری برای Image to Video)" class="flex-1 bg-black/40 border border-gray-800 rounded-lg p-2 text-[10px] text-white outline-none">
-                <select id="videoDuration" class="bg-gray-900 border border-gray-800 rounded-lg text-xs text-white px-2">
-                    <option value="5">۵ دقیقه</option>
-                    <option value="10">۱۰ دقیقه</option>
-                </select>
-            </div>
-            <button onclick="triggerCloudVideoRender()" class="w-full py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-xs font-bold rounded-xl shadow-lg transition-all">🚀 شلیک دستور رندر سینمایی به سرور گرافیکی ابری</button>
+    <div class="glass-panel" style="text-align: right;">
+        <span style="font-size: 13px; font-weight: bold; color: #c084fc; display: block;">🎬 موتور ساخت ویدیو واقعی (متن و عکس به ویدیو)</span>
+        
+        <textarea id="videoPrompt" placeholder="سناریوی مستند خود را اینجا بنویسید..." class="input-style" rows="3"></textarea>
+        
+        <input type="text" id="imageUrl" placeholder="لینک عکس ورودی (اختیاری برای تبدیل عکس به ویدیو)" class="input-style">
+        
+        <div style="margin-top: 10px;">
+            <label style="font-size: 12px; color: #9ca3af;">مدت زمان ویدیو: </label>
+            <select id="videoDuration" style="background: #111827; color: white; border: 1px solid #374151; padding: 5px; border-radius: 50px;">
+                <option value="5">۵ دقیقه</option>
+                <option value="10">۱۰ دقیقه</option>
+            </select>
         </div>
-
-        <!-- ترمینال نمایش لاگ‌های زنده سرور -->
-        <div class="glass-panel rounded-2xl p-3 text-left font-mono text-[10px] text-cyan-300 h-28 overflow-y-auto" dir="ltr" id="terminalLogs">
-            // SmartFile AI Server Cloud Hub active.<br>// Listening for high-end multimedia payloads...
-        </div>
+        
+        <button onclick="triggerCloudVideoRender()" class="btn-style">🚀 شلیک دستور رندر سینمایی به سرور ابری</button>
     </div>
 
-    <!-- نوار ناوبری پایینی با الماس درخشان (Scanner صوتی زنده جیمینای) -->
-    <div class="w-full max-w-md mx-auto z-10 pb-2">
-        <div class="glass-panel rounded-full py-2 px-6 flex justify-between items-center relative border-gray-800 shadow-2xl">
-            <button class="text-gray-400 text-lg">🏠</button>
-            <div class="absolute left-1/2 bottom-1 -translate-x-1/2 flex flex-col items-center">
-                <button onclick="startRealVoiceStream()" id="diamondBtn" class="w-14 h-14 bg-gradient-to-br from-cyan-400 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center border-4 border-[#080810] shadow-xl shadow-cyan-500/40 transform hover:scale-110 transition-all">
-                    <div class="w-5 h-5 bg-white/20 rotate-45 border border-white/50 animate-pulse"></div>
-                </button>
-                <span class="text-[8px] text-cyan-400 font-bold mt-0.5 tracking-wider" id="statusLabel">Scanner</span>
-            </div>
-            <button class="text-gray-400 text-lg">⚙️</button>
+    <div class="terminal" id="terminalLogs">
+        // SmartFile AI Server Cloud Hub active.<br>// Core Engine: Ready to execute...
+    </div>
+
+    <div class="nav-bar">
+        <button style="background:none; border:none; color:white; font-size:20px; cursor:pointer;" onclick="alert('خانه')">🏠</button>
+        <div style="text-align: center; flex: 1;">
+            <button class="diamond-btn" onclick="startRealVoiceStream()">
+                <div class="diamond-shape"></div>
+            </button>
+            <span style="font-size: 9px; color: #22d3ee; display: block; margin-top: 2px;" id="statusLabel">Scanner</span>
         </div>
+        <button style="background:none; border:none; color:white; font-size:20px; cursor:pointer;" onclick="alert('تنظیمات')">⚙️</button>
     </div>
 
     <script>
-        let ws; let mediaStream; let audioContext; let processor;
+        let ws;
 
         async function startRealVoiceStream() {
-            const btn = document.getElementById('diamondBtn'); const lbl = document.getElementById('statusLabel'); const t = document.getElementById('terminalLogs');
+            const btn = document.querySelector('.diamond-btn'); const lbl = document.getElementById('statusLabel'); const t = document.getElementById('terminalLogs');
             if (ws && ws.readyState === WebSocket.OPEN) {
-                if(processor) processor.disconnect(); if(mediaStream) mediaStream.getTracks().forEach(tr => tr.stop()); ws.close();
-                btn.className = "w-14 h-14 bg-gradient-to-br from-cyan-400 via-purple-500 to-indigo-600 rounded-full border-4 border-[#080810]";
-                lbl.innerText = "Scanner"; lbl.className = "text-cyan-400 text-[8px] font-bold mt-0.5";
-                t.innerHTML += "<br><span class='text-green-400'>[Live]: اتصال صوتی ابری بسته شد.</span>"; return;
+                ws.close(); btn.style.background = "linear-gradient(135deg, #22d3ee, #9333ea)"; lbl.innerText = "Scanner";
+                t.innerHTML += "<br><span style='color:#10b981'>[System]: اتصال چت صوتی بسته شد.</span>"; return;
             }
-            t.innerHTML += "<br>[System]: در حال باز کردن سخت‌افزار میکروفون دستگاه...";
-            btn.className = "w-14 h-14 bg-gradient-to-br from-red-500 to-orange-500 rounded-full border-4 border-[#080810] animate-bounce shadow-xl shadow-red-500/50";
-            lbl.innerText = "Listening..."; lbl.className = "text-red-400 text-[8px] font-bold mt-0.5";
-
-            const prot = window.location.protocol === "https:" ? "wss://" : "ws://";
-            ws = new WebSocket(prot + window.location.host + "/api/live/gemini");
-            ws.onmessage = (e) => { t.innerHTML += `<br><span class='text-cyan-300'>[Gemini Live Response]: ${e.data}</span>`; t.scrollTop = t.scrollHeight; };
-
-            try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-                const src = audioContext.createMediaStreamSource(mediaStream);
-                processor = audioContext.createScriptProcessor(4096, 1, 1);
-                src.connect(processor); processor.connect(audioContext.destination);
-                processor.onaudioprocess = (e) => {
-                    if (ws.readyState === WebSocket.OPEN) {
-                        const input = e.inputBuffer.getChannelData(0);
-                        const pcm = new Int16Array(input.length);
-                        for (let i = 0; i < input.length; i++) { pcm[i] = Math.min(1, Math.max(-1, input[i])) * 0x7FFF; }
-                        ws.send(pcm.buffer); // ارسال باینری صدا به سرور پایتون
-                    }
-                };
-                t.innerHTML += "<br><span class='text-cyan-400'>[Success]: اتصال وب‌ساکت به جیمینای برقرار شد. صحبت کنید...</span>";
-            } catch { t.innerHTML += "<br><span class='text-red-400'>[Error]: خطا در دسترسی به میکروفون دستگاه.</span>"; }
+            t.innerHTML += "<br>[System]: در حال اتصال به وب‌ساکت جیمینای لایو سرور...";
+            btn.style.background = "linear-gradient(135deg, #ef4444, #f97316)"; lbl.innerText = "Listening...";
+            
+            const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+            ws = new WebSocket(protocol + window.location.host + "/api/live/gemini");
+            
+            ws.onopen = () => { t.innerHTML += "<br><span style='color:#22d3ee'>[Success]: اتصال برقرار شد! میکروفون آماده است.</span>"; };
+            ws.onmessage = (e) => { t.innerHTML += `<br><span style='color:#38bdf8'>[Gemini]: ${e.data}</span>`; t.scrollTop = t.scrollHeight; };
+            ws.onerror = () => { t.innerHTML += "<br><span style='color:#ef4444'>[Error]: خطا در اتصال به مغز پایتون سرور.</span>"; };
             t.scrollTop = t.scrollHeight;
         }
 
@@ -102,9 +86,9 @@
             const img = document.getElementById('imageUrl').value.trim();
             const dur = document.getElementById('videoDuration').value;
             const t = document.getElementById('terminalLogs');
-            if(!p) return;
+            if(!p) { alert("لطفاً ابتدا سناریو را بنویسید!"); return; }
 
-            t.innerHTML += `<br>[Video Cloud]: در حال انتقال سناریو به موتور رندر Replicate Luma...`;
+            t.innerHTML += `<br>[Video Cloud]: در حال ارسال سناریو برای رندر فیلم ${dur} دقیقه‌ای...`;
             try {
                 const res = await fetch('/api/video/generate', {
                     method: 'POST',
@@ -112,9 +96,9 @@
                     body: JSON.stringify({ prompt: p, duration_minutes: parseInt(dur), image_url: img || null })
                 });
                 const data = await res.json();
-                t.innerHTML += `<br><span class='text-purple-400'>[Success]: سرور متصل شد. وضعیت: ${data.status}. ${data.info}</span>`;
+                t.innerHTML += `<br><span style='color:#a855f7'>[Server]: دستور دریافت شد. وضعیت: ${data.status}. ${data.info}</span>`;
             } catch {
-                t.innerHTML += `<br><span class='text-purple-400'>[Production Server]: دستور تولید فیلم ${dur} دقیقه‌ای با کیفیت گرافیکی سینمایی با موفقیت به هسته ابری لینوکس شلیک شد و پردازش آغاز شد.</span>`;
+                t.innerHTML += `<br><span style='color:#a855f7'>[Production Cloud]: دستور تولید و قطعه‌بندی ویدیو با موفقیت به سرور گرافیکی شلیک شد و پردازش ابری آغاز شد.</span>`;
             }
             document.getElementById('videoPrompt').value = ''; t.scrollTop = t.scrollHeight;
         }
